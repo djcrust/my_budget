@@ -1,4 +1,8 @@
 {% load static %}
+{% url 'dashboard' as dashboard_url %}
+{% url 'settings' as settings_url %}
+{% url 'transaction_new' as transaction_new_url %}
+{% url 'transaction_list' as transaction_list_url %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>AdminLTE 3 | Dashboard 3</title>
+  <title>{% block title %}{% endblock %}</title>
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
@@ -17,16 +21,7 @@
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
-<!--
-BODY TAG OPTIONS:
-=================
-Apply one or more of the following classes to to the body tag
-to get the desired effect
-|---------------------------------------------------------|
-|LAYOUT OPTIONS | sidebar-collapse                        |
-|               | sidebar-mini                            |
-|---------------------------------------------------------|
--->
+
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
   <!-- Navbar -->
@@ -36,7 +31,11 @@ to get the desired effect
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-
+    </ul>
+      <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'logout_user' %}" role="button"><i class="fas fa-sign-out-alt"></i></a>
+      </li>
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -58,7 +57,7 @@ to get the desired effect
           <img src="{% static 'dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">HOARAU Alexandre</a>
+          <a href="#" class="d-block"> {{ user.get_full_name}}</a>
         </div>
       </div>
 
@@ -68,38 +67,29 @@ to get the desired effect
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="#" class="nav-link active">
+            <a href="{% url 'dashboard' %}" class="nav-link {% if request.path == dashboard_url %} active {%endif%}">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
               </p>
             </a>
           </li>
-          <li class="nav-item has-treeview">
-            <a href="pages/widgets.html" class="nav-link">
+            <li class="nav-item">
+            <a href="{% url 'transaction_list' %}" class="nav-link
+            {% if request.path == transaction_list_url %}
+            active
+            {% elif request.path == transaction_new_url %}
+            active
+            {%endif%}">
               <i class="nav-icon fas fa-exchange-alt"></i>
               <p>
                 Transactions
-                  <i class="right fas fa-angle-left"></i>
               </p>
             </a>
-              <ul class="nav nav-treeview" style="display: none;">
-              <li class="nav-item">
-                <a href="{% url 'transaction_new' %}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>New Transaction</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/charts/flot.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>List</p>
-                </a>
-              </li>
-            </ul>
           </li>
+
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="{% url 'settings' %}" class="nav-link {% if request.path == settings_url %} active {%endif%}">
               <i class="nav-icon fas fa-cog"></i>
               <p>
                 Settings
@@ -120,14 +110,9 @@ to get the desired effect
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Dashboard</h1>
+            <h1 class="m-0 text-dark">{% block title_page %}{% endblock %}</h1>
           </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard</li>
-            </ol>
-          </div><!-- /.col -->
+        {% block button_space %}{% endblock %}
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
@@ -135,7 +120,9 @@ to get the desired effect
 
     <!-- Main content -->
     <div class="content">
-        {% block content %}{% endblock %}
+        <div class="container-fluid-">
+            {% block content %}{% endblock %}
+        </div>
     </div>
     <!-- /.content -->
 
@@ -172,5 +159,8 @@ to get the desired effect
 <script src="{% static 'plugins/chart.js/Chart.min.js'  %}"></script>
 <script src="{% static 'dist/js/demo.js'  %}"></script>
 <script src="{% static 'dist/js/pages/dashboard3.js' %}"></script>
+
+{% block jsfile %}{% endblock %}
+
 </body>
 </html>
