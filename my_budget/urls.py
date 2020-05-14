@@ -18,13 +18,20 @@ from django.urls import path, include
 from budget_settings import views
 
 urlpatterns = [
+    # Admin
     path('admin/', admin.site.urls),
     path('',views.dashboard, name = 'dashboard'),
+
+    # Transaction
     path('transaction_new/',views.transaction_new, name = 'transaction_new'),
     path('transaction_list/',views.transaction_list, name = 'transaction_list'),
     path('transaction_edit/<int:pk>/',views.transaction_edit, name = 'transaction_edit'),
     path('transaction_delete/<int:pk>/',views.transaction_delete, name = 'transaction_delete'),
+
+    # Transaction
     path('settings/',views.settings_page, name = 'settings'),
+
+    # Auth
     path('login_user/',views.login_user, name = 'login_user'),
     path('logout_user/',views.logout_user, name = 'logout_user'),
 ]

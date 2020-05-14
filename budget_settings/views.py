@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import RequestContext
@@ -85,8 +86,19 @@ def transaction_list(request):
         return HttpResponseRedirect('/login_user/')
     else:
         transaction = Transaction.objects.all().order_by('-Date','-Number')
+        paginator = Paginator(transaction, 10)
+        page = request.GET.get('page')
+        try:
+            data_list = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer deliver the first page
+            data_list = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range deliver last page of results
+            data_list = paginator.page(paginator.num_pages)
         context = {
-            'transaction_list': transaction,
+            'page': page,
+            'transaction_list': data_list,
         }
         return render(request, 'budget_settings/transaction_list.html',context)
 
