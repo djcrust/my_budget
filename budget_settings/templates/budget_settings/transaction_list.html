@@ -19,32 +19,29 @@
                     <tr>
                       <th>DATE</th>
                       <th>#</th>
+                      <th>ACCOUNT</th>
                       <th>CATEGORY</th>
-                      <th>WITHDRAWAL</th>
-                      <th>DEPOSIT</th>
+                      <th>DEBIT</th>
+                      <th>CREDIT</th>
                       <th></th>
                     </tr>
                   </thead>
                   <tbody>
                   {% for transaction in transaction_list %}
                       <tr>
-                      <td>{{ transaction.Date }}</td>
+                      <td>{{ transaction.Date|date:"d/m/Y" }}</td>
                       <td>{{ transaction.Number }}</td>
+                      <td>{{ transaction.Account }}</td>
                       <td>{{ transaction.Category }}</td>
-                      <td>{{ transaction.Withdrawal }}</td>
+                      <td>{{ transaction.Withdrawal|floatformat:'2' }}</td>
                       <td>{{ transaction.Deposit }}</td>
                       <td class="project-actions text-right">
-                          <a class="btn btn-primary btn-sm" href="{% url 'transaction_edit' pk=transaction.pk %}">
-                              <i class="fas fa-folder">
-                              </i>
-                              View
-                          </a>
                           <a class="btn btn-info btn-sm" href="{% url 'transaction_edit' pk=transaction.pk %}"">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                           </a>
-                          <a class="btn btn-danger btn-sm" href="#">
+                          <a class="btn btn-danger btn-sm" href="{% url 'transaction_delete' pk=transaction.pk %}">
                               <i class="fas fa-trash">
                               </i>
                               Delete

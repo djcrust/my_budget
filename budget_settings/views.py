@@ -69,6 +69,17 @@ def transaction_new(request):
             return render(request, 'budget_settings/transaction_new.html', context)
 
 
+def transaction_delete(request, pk):
+    transaction = get_object_or_404(Transaction, pk=pk)
+    context = {
+        'transaction': transaction
+    }
+    if request.method == 'POST':
+        transaction.delete()
+        return HttpResponseRedirect('/transaction_list/')
+    return render(request, 'budget_settings/transaction_delete.html', context)
+
+
 def transaction_list(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect('/login_user/')

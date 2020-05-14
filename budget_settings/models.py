@@ -9,7 +9,7 @@ class Category(models.Model):
     Name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
-        return self.Name
+        return self.Name.upper()
 
 
 class Account(models.Model):
@@ -17,7 +17,7 @@ class Account(models.Model):
     Comment = models.TextField(blank=True)
 
     def __str__(self):
-        return self.Name
+        return self.Name.upper()
 
 
 def increment_transaction_number():

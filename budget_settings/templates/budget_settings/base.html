@@ -76,9 +76,7 @@
           </li>
             <li class="nav-item">
             <a href="{% url 'transaction_list' %}" class="nav-link
-            {% if request.path == transaction_list_url %}
-            active
-            {% elif request.path == transaction_new_url %}
+            {% if 'transaction' in request.path  %}
             active
             {%endif%}">
               <i class="nav-icon fas fa-exchange-alt"></i>

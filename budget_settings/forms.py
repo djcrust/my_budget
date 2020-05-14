@@ -2,9 +2,13 @@ from django import forms
 from .models import *
 
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+
 class TransactionForm(forms.ModelForm):
-    Date = forms.DateTimeField(
-        widget=forms.DateTimeInput(attrs={
+    Date = forms.DateField(
+        widget=DateInput(attrs={
             'class': 'form-control datetimepicker-input',
         })
     )
